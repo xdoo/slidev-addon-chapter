@@ -9,7 +9,13 @@ title: Slidev Chapters Addon Playground
 
 This slide intentionally appears before the first chapter.
 
-<ChapterToc :show-numbers="true" :highlight-current="true" />
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+  <span class="chapter-context__empty">None yet — ChapterTitle renders nothing</span>
+</div>
+
+<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
 
 ---
 layout: section
@@ -22,13 +28,23 @@ chapter:
 
 The chapter declaration works with an ordinary theme layout.
 
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+</div>
+
 ---
 
 # A titled member slide
 
 This title must not become a `ChapterToc` entry.
 
-<ChapterToc :show-numbers="true" :highlight-current="true" />
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+</div>
+
+<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
 
 ---
 src: ./pages/architecture.md
@@ -40,6 +56,11 @@ src: ./pages/architecture.md
 
 This slide belongs to the imported Architecture chapter.
 
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+</div>
+
 ---
 chapter:
   id: delivery
@@ -50,7 +71,12 @@ chapter:
 
 This chapter begins on a content slide and runs to the deck end.
 
-<ChapterToc :show-numbers="true" :highlight-current="true" />
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+</div>
+
+<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
 
 ---
 
@@ -66,3 +92,40 @@ chapter:
 ```
 
 The addon does not provide or interpret `layout: chapter`.
+
+<div class="chapter-context">
+  <span class="chapter-context__label">Current chapter</span>
+  <ChapterTitle></ChapterTitle>
+</div>
+
+<style>
+.chapter-context {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  margin-block: 1rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+}
+
+.chapter-context__label {
+  opacity: 0.6;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-title {
+  font-weight: 600;
+}
+
+.chapter-context:has(.chapter-title) .chapter-context__empty {
+  display: none;
+}
+
+.chapter-context__empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+</style>

@@ -89,6 +89,38 @@ chapter:
 
 The addon provides no layouts, overrides no theme layout, and adds no global CSS.
 
+## `<ChapterTitle />`
+
+`<ChapterTitle />` displays the title of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for headers, footers, progress indicators, and custom layouts.
+
+Components in an addon are discovered automatically by Slidev. Add the component wherever the current chapter title should appear:
+
+```md
+# Current chapter
+
+<ChapterTitle />
+```
+
+When the active chapter title is `Architecture`, the component renders:
+
+```html
+<span class="chapter-title">
+  Architecture
+</span>
+```
+
+It renders nothing before the first chapter or whenever no chapter is active. The title updates automatically as navigation enters another chapter. The component always displays `chapter.title`; it adds no numbering, icons, wrapper elements, or extra semantics.
+
+The component has no inline or opinionated default styles. Use its public CSS class to theme it:
+
+```css
+.chapter-title {
+  font-weight: 600;
+}
+```
+
+`.chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases.
+
 ## `<ChapterToc />`
 
 Components in an addon are discovered automatically by Slidev:
@@ -122,6 +154,7 @@ Every relevant DOM element exposes stable CSS class names and data attributes.
 ### CSS classes
 
 ```text
+.chapter-title
 .chapter-toc
 .chapter-toc__list
 .chapter-toc__item
