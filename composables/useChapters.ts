@@ -1,8 +1,8 @@
-import type { ChapterState, NormalizedSlide } from '../src/types'
+import type { ChapterState, NormalizedSlide } from '../src'
 import { useNav } from '@slidev/client'
 import { computed, readonly } from 'vue'
-import { ChapterValidationError } from '../src/error'
-import { extractChapters, findCurrentChapter } from '../src/extract-chapters'
+import { ChapterValidationError } from '../src'
+import { extractChapters, findCurrentChapter } from '../src'
 
 export function useChapters(): ChapterState {
   const { slides, currentPage } = useNav()
