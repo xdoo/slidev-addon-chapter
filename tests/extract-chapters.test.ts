@@ -1,6 +1,6 @@
-import type { NormalizedSlide } from '../src'
+import type { NormalizedSlide } from '../src/types'
 import { describe, expect, it } from 'vitest'
-import { extractChapters, findCurrentChapter, findCurrentSubchapter } from '../src'
+import { extractChapters, findCurrentChapter, findCurrentSubchapter } from '../src/extract-chapters'
 
 function slide(slideNumber: number, frontmatter: Record<string, unknown> = {}): NormalizedSlide {
   return { slideNumber, frontmatter }
