@@ -2,6 +2,10 @@
 
 Explicit, theme-independent chapters for [Slidev](https://sli.dev/). A chapter is declared once in slide frontmatter and can span any number of slides. The addon derives its public API and chapter overview from those declarations; it does not maintain a second agenda list.
 
+## Single Source of Truth
+
+Chapter declarations are the single source of truth for the presentation structure. Authors define each chapter exactly once. All chapter-aware components, such as <ChapterToc />, agendas, navigation, progress indicators, and future chapter features derive their content exclusively from these declarations. No duplicate chapter lists are maintained.
+
 ## Requirements
 
 - Node.js 20.12 or newer
@@ -46,6 +50,8 @@ chapter:
   id: fundamentals
   title: Fundamentals
 ---
+
+In practice, chapter metadata is typically added to the agenda or chapter-divider slide that introduces the chapter. The addon does not require a specific layout; it only interprets the chapter frontmatter.
 
 # First slide in the chapter
 
@@ -135,6 +141,8 @@ interface ChapterState {
 ```
 
 Direct entry and browser refresh work because `currentChapter` is calculated from the current one-based slide number rather than navigation history.
+
+The exported chapter model is the public integration point for chapter-aware functionality. Themes, decks, and third-party addons should consume the exported APIs instead of re-parsing slide frontmatter or implementing their own chapter extraction logic. This ensures a single, consistent interpretation of chapter semantics across the presentation.
 
 Pure extraction utilities and public types are also exported for advanced consumers:
 
