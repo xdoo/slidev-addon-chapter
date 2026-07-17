@@ -1,0 +1,62 @@
+{
+  "name": "slidev-addon-chapters",
+  "version": "0.1.0",
+  "description": "Explicit, theme-independent chapter semantics for Slidev",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "slidev",
+    "slidev-addon",
+    "chapters",
+    "presentation"
+  ],
+  "files": [
+    "components",
+    "composables",
+    "docs",
+    "src",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    },
+    "./composables": {
+      "types": "./composables/index.ts",
+      "import": "./composables/index.ts"
+    }
+  },
+  "engines": {
+    "node": ">=20.12.0",
+    "slidev": ">=52.18.0"
+  },
+  "peerDependencies": {
+    "@slidev/client": ">=52.18.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@slidev/cli": "52.18.0",
+    "@slidev/client": "52.18.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "@types/node": "latest",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "@vue/test-utils": "latest",
+    "jsdom": "latest",
+    "playwright-chromium": "^1.61.1",
+    "typescript": "^5.9.3",
+    "vitest": "latest",
+    "vue": "latest",
+    "vue-tsc": "latest"
+  },
+  "scripts": {
+    "dev": "slidev playground/slides.md --open=false",
+    "test": "vitest run",
+    "test:e2e": "node scripts/e2e.mjs",
+    "typecheck": "vue-tsc --noEmit",
+    "build": "slidev build playground/slides.md --out dist",
+    "export:pdf": "slidev export playground/slides.md --format pdf --output dist/chapters.pdf",
+    "export:pptx": "slidev export playground/slides.md --format pptx --output dist/chapters.pptx"
+  }
+}

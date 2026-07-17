@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@slidev/client": ["./types/slidev-client.ts"]
+    },
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "types": ["node", "vitest/globals"],
+    "jsx": "preserve"
+  },
+  "include": [
+    "components/**/*.vue",
+    "composables/**/*.ts",
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "types/**/*.ts",
+    "env.d.ts"
+  ]
+}
