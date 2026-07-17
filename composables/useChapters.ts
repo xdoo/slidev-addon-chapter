@@ -2,7 +2,7 @@ import type { ChapterState, NormalizedSlide } from '../src'
 import { useNav } from '@slidev/client'
 import { computed, readonly } from 'vue'
 import { ChapterValidationError } from '../src'
-import { extractChapters, findCurrentChapter } from '../src'
+import { extractChapters, findCurrentChapter, findCurrentSubchapter } from '../src'
 
 export function useChapters(): ChapterState {
   const { slides, currentPage } = useNav()
@@ -21,9 +21,11 @@ export function useChapters(): ChapterState {
   })
 
   const currentChapter = computed(() => findCurrentChapter(chapters.value, currentPage.value))
+  const currentSubchapter = computed(() => findCurrentSubchapter(currentChapter.value, currentPage.value))
 
   return {
     chapters: readonly(chapters),
     currentChapter: readonly(currentChapter),
+    currentSubchapter: readonly(currentSubchapter),
   }
 }

@@ -15,7 +15,7 @@ This slide intentionally appears before the first chapter.
   <span class="chapter-context__empty">None yet — ChapterTitle renders nothing</span>
 </div>
 
-<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
+<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
 
 ---
 layout: section
@@ -34,6 +34,10 @@ The chapter declaration works with an ordinary theme layout.
 </div>
 
 ---
+subchapter:
+  id: foundations
+  title: Foundations
+---
 
 # A titled member slide
 
@@ -44,12 +48,16 @@ This title must not become a `ChapterToc` entry.
   <ChapterTitle></ChapterTitle>
 </div>
 
-<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
+<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
 
 ---
 src: ./pages/architecture.md
 ---
 
+---
+subchapter:
+  id: target-architecture
+  title: Target Architecture
 ---
 
 # Architecture details
@@ -69,14 +77,14 @@ chapter:
 
 # Delivery
 
-This chapter begins on a content slide and runs to the deck end.
+This chapter begins on a content slide, has no subchapters, and runs to the deck end.
 
 <div class="chapter-context">
   <span class="chapter-context__label">Current chapter</span>
   <ChapterTitle></ChapterTitle>
 </div>
 
-<ChapterToc :show-numbers="true" :highlight-current="true"></ChapterToc>
+<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
 
 ---
 
@@ -127,5 +135,15 @@ The addon does not provide or interpret `layout: chapter`.
 .chapter-context__empty {
   opacity: 0.6;
   font-style: italic;
+}
+
+.chapter-toc__sublist {
+  margin-block: 0.2rem 0.6rem;
+  padding-inline-start: 1.5rem;
+}
+
+.chapter-toc__subitem--current .chapter-toc__subtitle {
+  font-weight: 700;
+  text-decoration: underline;
 }
 </style>

@@ -1,10 +1,10 @@
 # slidev-addon-chapters
 
-Explicit, theme-independent chapters for [Slidev](https://sli.dev/). A chapter is declared once in slide frontmatter and can span any number of slides. The addon derives its public API and chapter overview from those declarations; it does not maintain a second agenda list.
+Explicit, theme-independent chapters and optional subchapters for [Slidev](https://sli.dev/). Each structural boundary is declared once in slide frontmatter and can span any number of slides. The addon derives its public API and overview from those declarations; it does not maintain a second agenda list.
 
 ## Single Source of Truth
 
-Chapter declarations are the single source of truth for the presentation structure. Authors define each chapter exactly once. All chapter-aware components, such as <ChapterToc />, agendas, navigation, progress indicators, and future chapter features derive their content exclusively from these declarations. No duplicate chapter lists are maintained.
+Chapter and subchapter declarations are the single source of truth for the presentation structure. All chapter-aware components, agendas, navigation, progress indicators, and future features derive their content exclusively from these declarations. Themes and other addons should use `useChapters()` instead of parsing frontmatter or maintaining duplicate lists.
 
 ## Requirements
 
@@ -74,6 +74,22 @@ Both fields are required non-empty strings. IDs must be unique across the resolv
 
 Imported slides work when Slidev exposes them in its resolved public `useNav().slides` sequence. Their effective presentation number—not their source-file-local index—is used.
 
+## Declaring subchapters
+
+Subchapters are an optional second and final hierarchy level beneath chapters. Declare one independently on the slide where it starts:
+
+```yaml
+---
+subchapter:
+  id: target-architecture
+  title: Target Architecture
+---
+```
+
+A subchapter belongs to the currently active chapter. Its declaration slide and following slides remain in it until the next subchapter or chapter declaration; a new chapter always ends the previous subchapter. A chapter may contain no subchapters. When `chapter` and `subchapter` appear on the same slide, the new chapter starts first and owns that subchapter. Nested subchapters and arbitrary hierarchy depth are not supported.
+
+Both subchapter fields must be non-empty strings. IDs are unique within their chapter, so the same subchapter ID may be reused in a different chapter. A subchapter before the first chapter is rejected as orphaned. As with chapters, layouts and headings never create subchapters implicitly.
+
 ### Semantics and layout are independent
 
 Only `chapter` starts a chapter. `layout: chapter` alone has no semantic meaning to this addon. A theme can provide a chapter-divider layout and authors may combine it with metadata:
@@ -130,6 +146,7 @@ Components in an addon are discovered automatically by Slidev:
 
 <ChapterToc
   :show-numbers="true"
+  :show-subchapters="true"
   :highlight-current="true"
 />
 ```
@@ -137,9 +154,10 @@ Components in an addon are discovered automatically by Slidev:
 | Prop | Type | Default | Effect |
 | --- | --- | --- | --- |
 | `showNumbers` | `boolean` | `false` | Shows one-based chapter numbers. |
+| `showSubchapters` | `boolean` | `false` | Renders nested subchapters; with numbers enabled they use `1.1`, `1.2`, and so on. |
 | `highlightCurrent` | `boolean` | `false` | Marks the current entry with `aria-current="location"`, `data-current="true"`, and `.chapter-toc__item--current`. |
 
-The component renders each chapter exactly once and never adds member-slide titles. Entries use Slidev's public `go()` operation to navigate to the first slide. Stable local hooks include `[data-chapter-toc]`, `[data-chapter-id]`, `.chapter-toc__item`, `.chapter-toc__link`, `.chapter-toc__number`, and `.chapter-toc__title`.
+The default remains chapter-only even when subchapters are declared. When enabled, each subchapter is nested beneath its owning chapter; current chapter and subchapter entries are both highlighted. Chapter and subchapter buttons use Slidev's public `go()` operation to navigate to their first slide.
 
 The small component-scoped baseline only resets the button and list enough to remain usable. Themes and decks retain control of appearance.
 
@@ -162,6 +180,12 @@ Every relevant DOM element exposes stable CSS class names and data attributes.
 .chapter-toc__link
 .chapter-toc__number
 .chapter-toc__title
+.chapter-toc__sublist
+.chapter-toc__subitem
+.chapter-toc__subitem--current
+.chapter-toc__sublink
+.chapter-toc__subnumber
+.chapter-toc__subtitle
 ```
 
 ### Data attributes
@@ -169,6 +193,8 @@ Every relevant DOM element exposes stable CSS class names and data attributes.
 ```text
 data-chapter-toc
 data-chapter-id="<chapter-id>"
+data-subchapter-id="<subchapter-id>"
+data-parent-chapter-id="<chapter-id>"
 data-current="true"
 ```
 
@@ -214,7 +240,7 @@ Composable auto-imports are not a documented addon convention, so import it expl
 import { useChapters } from 'slidev-addon-chapters'
 // or: import { useChapters } from 'slidev-addon-chapters/composables'
 
-const { chapters, currentChapter } = useChapters()
+const { chapters, currentChapter, currentSubchapter } = useChapters()
 ```
 
 Both properties are readonly Vue refs and update from Slidev's public navigation state:
@@ -227,11 +253,22 @@ interface Chapter {
   readonly startSlide: number  // one-based, inclusive
   readonly endSlide: number    // one-based, inclusive
   readonly slideNumbers: readonly number[]
+  readonly subchapters: readonly Subchapter[]
+}
+
+interface Subchapter {
+  readonly id: string
+  readonly title: string
+  readonly index: number       // zero-based within its chapter
+  readonly startSlide: number  // one-based, inclusive
+  readonly endSlide: number    // one-based, inclusive
+  readonly slideNumbers: readonly number[]
 }
 
 interface ChapterState {
   readonly chapters: Readonly<Ref<readonly Chapter[]>>
   readonly currentChapter: Readonly<Ref<Chapter | undefined>>
+  readonly currentSubchapter: Readonly<Ref<Subchapter | undefined>>
 }
 ```
 
@@ -246,6 +283,7 @@ import {
   ChapterValidationError,
   extractChapters,
   findCurrentChapter,
+  findCurrentSubchapter,
 } from 'slidev-addon-chapters'
 ```
 
@@ -268,6 +306,22 @@ Add the human-readable chapter title.
 
 `Slide N: duplicate chapter.id "…"; first declared on slide M.`  
 Give one of the chapters a unique ID. Repeated identical declarations are still duplicates, not references.
+
+`Slide N: subchapter.id must be a non-empty string.` / `subchapter.title must be a non-empty string.`
+
+Add the missing stable ID or human-readable title.
+
+`Slide N: subchapter "…" has no active chapter; declare a chapter first.`
+
+Move the declaration after a chapter start or declare its owning chapter on the same slide.
+
+`Slide N: duplicate subchapter.id "…" in chapter "…"; first declared on slide M.`
+
+Use a unique ID within that chapter. IDs may repeat in different chapters.
+
+## Migration from chapter-only decks
+
+Existing presentations require no changes. Chapter frontmatter, `ChapterTitle`, `ChapterToc` defaults, chapter navigation, and `currentChapter` retain their behavior. Adopt subchapters incrementally by adding declarations, enabling `showSubchapters` where desired, and reading the new runtime fields.
 
 If `<ChapterToc />` is unknown, confirm the full addon name is listed in the first slide's headmatter and that the installed Slidev version satisfies the supported range.
 

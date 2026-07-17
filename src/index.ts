@@ -1,5 +1,5 @@
 export { ChapterValidationError } from './error'
-export { extractChapters, findCurrentChapter } from './extract-chapters'
+export { extractChapters, findCurrentChapter, findCurrentSubchapter } from './extract-chapters'
 export type {
   Chapter,
   ChapterDiagnostic,
@@ -8,5 +8,7 @@ export type {
   ChapterFrontmatter,
   ChapterState,
   NormalizedSlide,
+  Subchapter,
+  SubchapterFrontmatter,
 } from './types'
 export { useChapters } from '../composables/useChapters'

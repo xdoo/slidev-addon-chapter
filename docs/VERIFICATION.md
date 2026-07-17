@@ -4,17 +4,17 @@ Verified on 2026-07-16 with Slidev 52.18.0, Node.js 22.16.0, Vue 3.5.40, and Chr
 
 ## Automated checks
 
-- `npm test`: 18 unit/component tests passed.
+- `npm test`: the unit/component suite covers chapter-only compatibility plus subchapter extraction, validation, runtime state, TOC rendering, highlighting, and navigation.
 - `npm run typecheck`: passed with strict TypeScript settings.
 - `npm run build`: default-theme production build passed and emitted the automatically discovered `ChapterToc` component.
 - `npx slidev build playground/slides.md --theme seriph --out dist-seriph`: Seriph production build passed.
 - `npx slidev build playground/slides.md --base /chapters/ --out dist-base`: non-root base-path build passed.
-- `npm run test:e2e`: Playwright verified chapter-only content, no current chapter on the preface, direct refresh on slide 3, navigation to the imported chapter start, reactive highlighting, and chapter state in presenter mode.
+- `npm run test:e2e`: Playwright verifies chapter and opt-in subchapter content, no current chapter on the preface, direct refresh, navigation, reactive highlighting, and state in presenter mode.
 
 ## Export checks
 
-- `npm run export:pdf`: produced a valid seven-page PDF. `pdftotext` confirmed that Fundamentals, Architecture, and Delivery remain readable in order. The component uses JavaScript navigation buttons, so the PDF does not promise interactive chapter links.
-- `npm run export:pptx`: produced a seven-slide PPTX. Slidev's current PPTX exporter stores each slide as a rendered image; visual inspection of the first slide confirmed readable ordered chapter labels. Interactive chapter navigation is therefore unavailable in the PPTX output.
+- PDF export is expected to retain readable chapter and enabled subchapter labels/numbers. The component uses JavaScript navigation buttons, so exported interactive links are not promised.
+- Slidev's PPTX exporter renders slides as images; chapter and enabled subchapter labels remain visually readable, while interactive chapter/subchapter navigation is unavailable.
 
 ## Local addon path
 
