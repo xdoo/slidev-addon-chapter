@@ -111,6 +111,68 @@ The component renders each chapter exactly once and never adds member-slide titl
 
 The small component-scoped baseline only resets the button and list enough to remain usable. Themes and decks retain control of appearance.
 
+## Styling
+
+All components are intentionally designed to be fully themeable using standard CSS.
+
+The addon does not use Shadow DOM. Component styles are limited to sensible defaults and can be overridden by themes or presentations.
+
+Every relevant DOM element exposes stable CSS class names and data attributes.
+
+### CSS classes
+
+```text
+.chapter-toc
+.chapter-toc__list
+.chapter-toc__item
+.chapter-toc__item--current
+.chapter-toc__link
+.chapter-toc__number
+.chapter-toc__title
+```
+
+### Data attributes
+
+```text
+data-chapter-toc
+data-chapter-id="<chapter-id>"
+data-current="true"
+```
+
+Themes should rely on these public selectors instead of DOM traversal.
+
+When styling from another Vue component using `<style scoped>`, use `:deep(...)` as required by Vue.
+
+### Example
+
+```css
+.chapter-toc {
+    width: 100%;
+}
+
+.chapter-toc__list {
+    display: grid;
+    gap: 1rem;
+}
+
+.chapter-toc__link {
+    display: flex;
+    align-items: baseline;
+    width: 100%;
+}
+
+.chapter-toc__item--current .chapter-toc__title {
+    font-weight: 700;
+}
+
+.chapter-toc__item[data-chapter-id="architecture"] {
+    /* Custom styling for a specific chapter */
+}
+```
+
+> **Note**
+>
+> The documented CSS classes and data attributes are part of the addon's public styling API. Themes and presentations should use these selectors for customization rather than relying on the exact DOM hierarchy.
 ## `useChapters()`
 
 Composable auto-imports are not a documented addon convention, so import it explicitly:
