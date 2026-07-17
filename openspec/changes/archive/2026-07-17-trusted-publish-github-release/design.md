@@ -26,11 +26,11 @@ The implementation must preserve the source-based Slidev addon package, public e
 
 ### Keep the workflow linear and explicit
 
-`.github/workflows/publish.yml` will trigger only on `release.types: [published]`, request `contents: read` and `id-token: write`, check out the release tag, and configure a current supported Node.js version through `actions/setup-node` with `registry-url: https://registry.npmjs.org`. Node 22 remains appropriate because it satisfies the package's `>=20.19.0` engine and is already used by the release setup.
+`.github/workflows/publish.yml` will trigger only on `release.types: [published]`, request `contents: read` and `id-token: write`, check out the release tag, and configure a current supported Node.js version through `actions/setup-node` with `registry-url: https://registry.npmjs.org`. Node 24 is selected because it satisfies the package's `>=20.19.0` engine and the current npm Trusted Publishing runtime requirement. The workflow uses current `actions/checkout@v6` and `actions/setup-node@v6` releases.
 
 After `npm ci`, individual commands will expose the actual gate order: inline release identity validation, existing relevant tests, typecheck, build, any retained clean packed-consumer verification, `npm pack --dry-run`, and `npm publish --access public --provenance`. A single opaque `release:check` wrapper is avoided in the workflow so reviewers can see what blocks publication.
 
-Pinning an additional globally installed npm version is unnecessary unless implementation proves Trusted Publishing requires a newer npm than the selected Node runner provides. The declared package manager and lockfile remain authoritative for local development; the workflow should avoid complexity that does not contribute to publication.
+The workflow installs the declared npm 11.17.0 version because current Trusted Publishing requires npm 11.5.1 or later and the runner-bundled npm version is not part of the project's lockfile contract. The declared package manager and lockfile remain authoritative for local development.
 
 ### Validate release identity inline
 
@@ -60,7 +60,7 @@ The manifest version becomes `0.1.1`. The repository URL becomes `git+https://gi
 - [A release is published with the wrong tag] → Fail before tests and publication with actual and expected identity values; fix the release/tag rather than changing versions in CI.
 - [The allowlist omits a consumer file] → Keep the clean packed-consumer fixture because it validates real installation, imports, component discovery, typecheck, and build.
 - [Removing static workflow tests reduces local YAML assertions] → Keep the workflow intentionally small and validate its behavior at the platform boundary; do not recreate a partial Actions interpreter.
-- [The runner's bundled npm is too old for Trusted Publishing] → Confirm the effective npm version during implementation and add only the smallest supported npm setup if required.
+- [The runner's bundled npm is too old for Trusted Publishing] → Install the declared npm 11.17.0 version before dependency installation and publication.
 
 ## Migration Plan
 
