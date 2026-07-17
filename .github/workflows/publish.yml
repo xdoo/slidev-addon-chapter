@@ -1,0 +1,41 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the release tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Use the declared npm version
+        run: npm install --global npm@11.17.0
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Verify release identity
+        run: npm run verify:release -- "${{ github.event.release.tag_name }}"
+
+      - name: Run release quality gates
+        run: npm run release:check
+
+      - name: Publish with provenance
+        run: npm publish --access public --provenance

@@ -2,21 +2,33 @@
   "name": "slidev-addon-chapters",
   "version": "0.1.0",
   "description": "Explicit, theme-independent chapter semantics for Slidev",
+  "author": "Claus Straube",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xdoo/slidev-addon-chapter.git"
+  },
+  "homepage": "https://github.com/xdoo/slidev-addon-chapter#readme",
+  "bugs": {
+    "url": "https://github.com/xdoo/slidev-addon-chapter/issues"
+  },
   "keywords": [
     "slidev",
     "slidev-addon",
     "chapters",
+    "subchapters",
     "presentation"
   ],
+  "packageManager": "npm@11.17.0",
   "files": [
     "components",
     "composables",
-    "docs",
     "src",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
+  "types": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -28,12 +40,16 @@
     }
   },
   "engines": {
-    "node": ">=20.12.0",
+    "node": ">=20.19.0",
     "slidev": ">=52.18.0"
   },
   "peerDependencies": {
     "@slidev/client": ">=52.18.0",
     "vue": "^3.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "devDependencies": {
     "@slidev/cli": "52.18.0",
@@ -52,10 +68,14 @@
   },
   "scripts": {
     "dev": "slidev playground/slides.md --open=false",
-    "test": "node --test tests/check-pure-test-imports.node.mjs && node scripts/check-pure-test-imports.mjs && vitest run",
+    "test": "node --test tests/*.node.mjs && node scripts/check-pure-test-imports.mjs && vitest run",
     "test:e2e": "node scripts/e2e.mjs",
     "typecheck": "vue-tsc --noEmit",
     "build": "slidev build playground/slides.md --out dist",
+    "verify:package": "node scripts/verify-package-contents.mjs",
+    "verify:fixture": "node scripts/verify-packed-package.mjs",
+    "verify:release": "node scripts/verify-release-version.mjs",
+    "release:check": "npm test && npm run typecheck && npm run build && npm run verify:package && npm run verify:fixture",
     "export:pdf": "slidev export playground/slides.md --format pdf --output dist/chapters.pdf",
     "export:pptx": "slidev export playground/slides.md --format pptx --output dist/chapters.pptx"
   }

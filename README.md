@@ -8,11 +8,17 @@ Chapter and subchapter declarations are the single source of truth for the prese
 
 ## Requirements
 
-- Node.js 20.12 or newer
+- Node.js 20.19 or newer
 - Slidev 52.18.0 or newer
 - Vue 3
 
 The package starts at `0.1.0` and follows semantic versioning. Before `1.0.0`, breaking public API refinements may be released as minor versions.
+
+Package: [slidev-addon-chapters on npm](https://www.npmjs.com/package/slidev-addon-chapters)
+
+Repository: [xdoo/slidev-addon-chapter](https://github.com/xdoo/slidev-addon-chapter)
+
+Issues: [GitHub Issues](https://github.com/xdoo/slidev-addon-chapter/issues)
 
 ## Installation
 
@@ -331,9 +337,31 @@ If `<ChapterToc />` is unknown, confirm the full addon name is listed in the fir
 npm test
 npm run typecheck
 npm run build
+npm run verify:package
+npm run verify:fixture
 npm run export:pdf
 npm run export:pptx
 ```
+
+`npm run release:check` runs the release-blocking tests, typecheck, Slidev build, tarball inventory check, and clean packed-package fixture. The fixture installs the generated tarball into an independent Slidev project and verifies documented imports, automatic component discovery, typechecking, and production build.
+
+## Maintainer release process
+
+The package is public and unscoped. Releases use npm Trusted Publishing from a published GitHub Release; token-based manual publishing is not supported.
+
+Before the first release:
+
+1. Confirm that `slidev-addon-chapters` is still available on npm and that unscoped public publication is intended.
+2. Confirm the initial semantic version in `package.json` and `package-lock.json` (`0.1.0` for the planned first release).
+3. Run `npm ci`, `npm run release:check`, and inspect `npm pack --dry-run` locally.
+4. In npm package settings, configure a GitHub Actions trusted publisher with organization/user `xdoo`, repository `slidev-addon-chapter`, and workflow filename `publish.yml`.
+5. Commit the version and release-ready files. Do not publish manually.
+
+For every release, create a GitHub Release whose tag is exactly `v<package.json version>` (for example, `v0.1.0`) and whose target is the intended release commit, then publish the GitHub Release. `.github/workflows/publish.yml` checks out that tag, validates the version, repeats every quality gate, and publishes to the public npm registry using OpenID Connect and npm provenance. Pull requests, ordinary pushes, tag creation alone, and draft releases do not publish.
+
+## License
+
+This package is distributed under the [MIT License](./LICENSE).
 
 The [API spike](./docs/API-SPIKE.md) records the selected Slidev integration and official sources. The [verification record](./docs/VERIFICATION.md) contains the tested themes, browser scenarios, base-path build, and export findings.
 
