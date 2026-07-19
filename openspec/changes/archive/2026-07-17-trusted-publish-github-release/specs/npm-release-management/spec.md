@@ -1,8 +1,4 @@
-## Purpose
-
-Define the package metadata, contents, verification gates, release identity, and trusted publication process required to publish the addon safely to npm.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Public npm metadata is complete and evidence-based
 The package manifest SHALL declare the available npm name `slidev-addon-chapters`, semantic version `0.1.1`, description, `MIT` license, author, repository, homepage, bugs URL, relevant keywords, ESM package type, supported Node range, npm package-manager version, published files, verified entry points/exports/types, peer and development dependencies, and public publish configuration with provenance. The repository URL MUST equal npm's normalized Git URL `git+https://github.com/xdoo/slidev-addon-chapter.git`, and metadata MUST NOT claim an entry point or generated file that the package does not ship.
@@ -96,3 +92,4 @@ Before automated publication, maintainers MUST confirm npm ownership of `slidev-
 #### Scenario: Release preparation is complete
 - **WHEN** version `0.1.1` and all workflow changes are committed, local gates pass, and the Trusted Publisher is configured
 - **THEN** a maintainer creates and publishes GitHub Release `v0.1.1` to trigger publication
+
