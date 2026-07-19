@@ -51,11 +51,12 @@ try {
         '@slidev/client': ['./types/slidev-client.ts'],
       },
     },
-    include: ['verify-imports.ts', 'types/**/*.ts'],
+    include: ['verify-imports.ts', 'types/**/*.ts', 'types/**/*.d.ts'],
   }, null, 2))
   await mkdir(join(fixtureDir, 'types'))
   await writeFile(join(fixtureDir, 'types/slidev-client.ts'), `import type { ComputedRef, Ref } from 'vue'\nexport interface PublicSlideRoute { readonly no: number; readonly meta: { readonly slide: { readonly frontmatter: Record<string, unknown> } } }\nexport interface PublicSlidevNav { readonly slides: Ref<PublicSlideRoute[]>; readonly currentPage: ComputedRef<number>; readonly go: (page: number | string, clicks?: number, force?: boolean) => Promise<void> }\nexport declare function useNav(): PublicSlidevNav\n`)
-  await writeFile(join(fixtureDir, 'verify-imports.ts'), `import { extractChapters, useChapters } from '${manifest.name}'\nimport { useChapters as useChaptersSubpath } from '${manifest.name}/composables'\nvoid extractChapters\nvoid useChapters\nvoid useChaptersSubpath\n`)
+  await writeFile(join(fixtureDir, 'types/vue-shims.d.ts'), `declare module '*.vue' {\n  import type { DefineComponent } from 'vue'\n  const component: DefineComponent<object, object, unknown>\n  export default component\n}\n`)
+  await writeFile(join(fixtureDir, 'verify-imports.ts'), `import { CurrentChapterNumber, ChapterCount, CurrentChapterTitle, extractChapters, useChapters } from '${manifest.name}'\nimport { useChapters as useChaptersSubpath } from '${manifest.name}/composables'\nvoid CurrentChapterNumber\nvoid ChapterCount\nvoid CurrentChapterTitle\nvoid extractChapters\nvoid useChapters\nvoid useChaptersSubpath\n`)
   await writeFile(join(fixtureDir, 'slides.md'), `---\ntheme: default\naddons:\n  - ${manifest.name}\n---\n\n# Packed addon fixture\n\n---\nchapter:\n  id: verification\n  title: Verification\n---\n\n<ChapterTitle />\n\n<ChapterToc />\n`)
 
   run('npm', ['install', '--ignore-scripts', '--no-audit', '--no-fund'], fixtureDir)

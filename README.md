@@ -143,6 +143,96 @@ The component has no inline or opinionated default styles. Use its public CSS cl
 
 `.chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases.
 
+## `<CurrentChapterNumber />`
+
+`<CurrentChapterNumber />` displays the one-based number of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for progress indicators and chapter-aware footers.
+
+Components in an addon are discovered automatically by Slidev. Add the component wherever the current chapter number should appear:
+
+```md
+Page <CurrentChapterNumber /> / <ChapterCount />
+```
+
+When the active chapter is the first declared chapter, the component renders:
+
+```html
+<span class="current-chapter-number">
+  1
+</span>
+```
+
+It renders nothing before the first chapter or whenever no chapter is active. The number updates automatically as navigation enters another chapter. The component adds no formatting, separators, labels, or wrappers.
+
+The component has no inline or opinionated default styles. Use its public CSS class to theme it:
+
+```css
+.current-chapter-number {
+  font-weight: 600;
+}
+```
+
+`.current-chapter-number` is part of the addon's stable public styling API and will remain compatible across minor releases.
+
+## `<ChapterCount />`
+
+`<ChapterCount />` displays the total number of declared chapters without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for progress indicators and chapter-aware footers.
+
+Components in an addon are discovered automatically by Slidev. Add the component wherever the total chapter count should appear:
+
+```md
+Page <CurrentChapterNumber /> / <ChapterCount />
+```
+
+When five chapters are declared, the component renders:
+
+```html
+<span class="chapter-count">
+  5
+</span>
+```
+
+It renders nothing when no chapters are declared. The count updates automatically when chapter declarations change during editing. The component adds no formatting, separators, labels, or wrappers.
+
+The component has no inline or opinionated default styles. Use its public CSS class to theme it:
+
+```css
+.chapter-count {
+  font-weight: 600;
+}
+```
+
+`.chapter-count` is part of the addon's stable public styling API and will remain compatible across minor releases.
+
+## `<CurrentChapterTitle />`
+
+`<CurrentChapterTitle />` displays the title of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It provides equivalent functionality to `ChapterTitle` with a more explicit name and its own distinct CSS class (`.current-chapter-title` instead of `.chapter-title`). Both components coexist without conflict.
+
+Components in an addon are discovered automatically by Slidev. Add the component wherever the current chapter title should appear:
+
+```md
+# <CurrentChapterTitle />
+```
+
+When the active chapter title is `Architecture`, the component renders:
+
+```html
+<span class="current-chapter-title">
+  Architecture
+</span>
+```
+
+It renders nothing before the first chapter or whenever no chapter is active. The title updates automatically as navigation enters another chapter. The component always displays `currentChapter.title`; it adds no numbering, icons, wrapper elements, or extra semantics.
+
+The component has no inline or opinionated default styles. Use its public CSS class to theme it:
+
+```css
+.current-chapter-title {
+  font-weight: 600;
+}
+```
+
+`.current-chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases.
+
 ## `<ChapterToc />`
 
 Components in an addon are discovered automatically by Slidev:
@@ -179,6 +269,9 @@ Every relevant DOM element exposes stable CSS class names and data attributes.
 
 ```text
 .chapter-title
+.current-chapter-number
+.chapter-count
+.current-chapter-title
 .chapter-toc
 .chapter-toc__list
 .chapter-toc__item
