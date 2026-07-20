@@ -72,6 +72,7 @@
     "test:e2e": "node scripts/e2e.mjs",
     "typecheck": "vue-tsc --noEmit",
     "build": "slidev build playground/slides.md --out dist",
+    "build:pages": "npm run build -- --base /slidev-addon-chapter/",
     "verify:fixture": "node scripts/verify-packed-package.mjs",
     "export:pdf": "slidev export playground/slides.md --format pdf --output dist/chapters.pdf",
     "export:pptx": "slidev export playground/slides.md --format pptx --output dist/chapters.pptx"

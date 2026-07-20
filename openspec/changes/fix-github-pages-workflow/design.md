@@ -2,7 +2,7 @@
 
 The Pages job completes `npm ci`, which installs `@slidev/cli` under `node_modules/.bin`, but then invokes `slidev` directly. GitHub-hosted runners do not implicitly add a repository's local npm binaries to `PATH` for arbitrary shell steps, so the command exits with status 127. The workflow also lags behind `publish.yml`: it uses `actions/checkout@v4`, `actions/setup-node@v4`, and Node.js 22, whereas the publication path already uses the Node 24-compatible v6 actions and Node.js 24.
 
-The GitHub Pages output must continue to use `/slidev-addon-chapter/` as its Vite base because the site is hosted below the repository path. The normal `build` script remains useful for root-relative local output, so Pages needs an explicit repository-owned build entry point without changing the default build semantics.
+The GitHub Pages output must continue to use `/slidev-addon-chapter/` as its Vite base because the site is hosted below the repository path. Because Slidev resolves the relative `--out dist` argument from the deck directory, the existing build writes to `playground/dist`; a fresh GitHub runner therefore has no root-level `dist` directory to upload. The normal `build` script remains useful for local output, so Pages needs an explicit repository-owned build entry point without changing the default build semantics or output location.
 
 ## Goals / Non-Goals
 
@@ -11,7 +11,7 @@ The GitHub Pages output must continue to use `/slidev-addon-chapter/` as its Vit
 - Make the Pages build resolve the locked local Slidev CLI after `npm ci`.
 - Keep the repository-specific Pages base path explicit and repeatable locally.
 - Remove the Node 20 action-runtime deprecation warning by matching the maintained action majors and Node.js version already used by `publish.yml`.
-- Keep deployment triggers, permissions, artifact handling, and the public Pages URL unchanged.
+- Keep deployment triggers, permissions, deployment actions, and the public Pages URL unchanged.
 
 **Non-Goals:**
 
@@ -36,11 +36,14 @@ Pinning action commit SHAs was considered but is outside the repository's curren
 
 ### Leave the deployment pipeline unchanged
 
-Keep the existing trigger, permissions, concurrency policy, `configure-pages`, artifact upload, and deployment steps. The failure is confined to environment setup and command resolution, so changing the deployment architecture would expand risk without improving the fix.
+Keep the existing trigger, permissions, concurrency policy, `configure-pages`, artifact upload action, and deployment action. The failure does not require a different deployment architecture.
+
+Configure `upload-pages-artifact` to upload `playground/dist`, the directory actually produced by Slidev for `playground/slides.md`. Changing the package build output to a root-level directory was considered, but would alter the established `build` script semantics solely to accommodate an incorrect workflow assumption.
 
 ## Risks / Trade-offs
 
 - [The repository base path remains hardcoded] → Keep it in the purpose-specific `build:pages` script so a repository rename has one obvious project-level update point.
+- [Slidev resolves relative output paths from the deck directory] → Make the workflow's artifact path explicitly match `playground/dist` and verify that directory after the build.
 - [Node.js 24 may expose dependency incompatibilities] → Run the Pages build locally with the locked dependency tree and retain `npm ci` in CI.
 - [Action major upgrades can include behavioral changes] → Use the same v6 action majors already exercised by the repository's publish workflow and leave their configuration minimal.
 - [A wrapper script adds one package command] → The command makes the production Pages build locally reproducible and removes raw tool invocation from CI.
