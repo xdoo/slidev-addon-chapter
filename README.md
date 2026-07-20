@@ -2,6 +2,8 @@
 
 Explicit, theme-independent chapters and optional subchapters for [Slidev](https://sli.dev/). Each structural boundary is declared once in slide frontmatter and can span any number of slides. The addon derives its public API and overview from those declarations; it does not maintain a second agenda list.
 
+> [Live demo](https://xdoo.github.io/slidev-addon-chapter/) &mdash; interactive feature showcase
+
 ## Single Source of Truth
 
 Chapter and subchapter declarations are the single source of truth for the presentation structure. All chapter-aware components, agendas, navigation, progress indicators, and future features derive their content exclusively from these declarations. Themes and other addons should use `useChapters()` instead of parsing frontmatter or maintaining duplicate lists.
