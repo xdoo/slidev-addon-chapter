@@ -7,7 +7,9 @@ title: Slidev Chapters Addon Playground
 
 # Preface
 
-This slide intentionally appears before the first chapter.
+**slidev-addon-chapters** provides explicit, theme-independent chapter and subchapter semantics for [Slidev](https://sli.dev/). Declare structural boundaries in slide frontmatter and get automatic `<ChapterTitle />`, `<ChapterToc />`, `<CurrentChapterNumber />`, `<ChapterCount />`, and a `useChapters()` composable — all from a single source of truth.
+
+[README & docs](https://github.com/xdoo/slidev-addon-chapter) · [npm](https://www.npmjs.com/package/slidev-addon-chapters) · Navigate through the slides to explore every feature.
 
 <div class="chapter-context">
   <span class="chapter-context__label">Current chapter</span>
