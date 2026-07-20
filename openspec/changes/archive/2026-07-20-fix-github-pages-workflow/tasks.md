@@ -12,4 +12,4 @@
 
 - [x] 3.1 Inspect the generated `playground/dist` output and confirm static asset URLs use the `/slidev-addon-chapter/` base path.
 - [x] 3.2 Review the final workflow diff to confirm no Pages step depends on a global Slidev installation or a Node 20-based checkout/setup action.
-- [ ] 3.3 After the change reaches `main`, confirm the GitHub Pages workflow builds and deploys successfully without the Node 20 action-runtime deprecation warning.
+- [x] 3.3 After the change reaches `main`, confirm the GitHub Pages workflow builds and deploys successfully without the Node 20 action-runtime deprecation warning.
