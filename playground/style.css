@@ -1,0 +1,152 @@
+/* Playground-only teaching helpers. These classes are not addon API. */
+.intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0 1.5rem;
+}
+
+.intro-grid > div,
+.result-panel,
+.data-card {
+  border: 1px solid #dbe4f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  padding: 1rem;
+}
+
+.intro-grid strong,
+.intro-grid span,
+.data-card span {
+  display: block;
+}
+
+.intro-grid span {
+  margin-top: 0.35rem;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.model-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1.5rem 0;
+}
+
+.model-flow > div {
+  border-radius: 0.6rem;
+  padding: 0.7rem;
+}
+
+.model-flow__chapter {
+  grid-column: 1 / -1;
+  color: white;
+  background: #1e293b;
+  font-weight: 700;
+}
+
+.model-flow__subchapter {
+  grid-column: span 2;
+  color: #1e3a8a;
+  background: #dbeafe;
+  font-weight: 600;
+}
+
+.model-flow__slide {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+.slidev-layout.two-cols {
+  column-gap: 2rem;
+}
+
+.slidev-layout.two-cols h1 {
+  grid-column: 1 / -1;
+  margin-bottom: 0.8rem;
+}
+
+.slidev-layout.two-cols h2 {
+  margin-bottom: 0.65rem;
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.slidev-layout.two-cols pre {
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.slidev-layout.two-cols p,
+.slidev-layout.two-cols li {
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.result-stack,
+.data-card {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.result-panel .chapter-title,
+.result-panel .current-chapter-title {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.eyebrow {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.position-demo {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: baseline;
+  border-radius: 999px;
+  color: #1e3a8a;
+  background: #dbeafe;
+  padding: 0.7rem 1.1rem;
+  font-size: 1.35rem;
+  font-weight: 650;
+}
+
+.data-card strong {
+  color: #1d4ed8;
+}
+
+/* Demonstrated public addon hooks, scoped to their example slides. */
+.title-css-demo .chapter-title {
+  color: #2563eb;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.title-css-demo .current-chapter-number {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.toc-css-demo .chapter-toc__link {
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.5rem;
+}
+
+.toc-css-demo .chapter-toc__item--current .chapter-toc__link {
+  color: white;
+  background: #2563eb;
+}
+
+.toc-css-demo .chapter-toc__sublist {
+  margin: 0.2rem 0 0.35rem 1rem;
+}
