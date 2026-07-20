@@ -5,147 +5,409 @@ addons:
 title: Slidev Chapters Addon Playground
 ---
 
-# Preface
+<div data-testid="playground-introduction">
 
-**slidev-addon-chapters** provides explicit, theme-independent chapter and subchapter semantics for [Slidev](https://sli.dev/). Declare structural boundaries in slide frontmatter and get automatic `<ChapterTitle />`, `<ChapterToc />`, `<CurrentChapterNumber />`, `<ChapterCount />`, and a `useChapters()` composable — all from a single source of truth.
+# Give long presentations a clear structure
 
-[README & docs](https://github.com/xdoo/slidev-addon-chapter) · [npm](https://www.npmjs.com/package/slidev-addon-chapters) · Navigate through the slides to explore every feature.
+`slidev-addon-chapters` turns explicit slide metadata into chapter-aware titles, navigation, progress, and data — without requiring a special theme.
 
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
-  <span class="chapter-context__empty">None yet — ChapterTitle renders nothing</span>
+<div class="intro-grid">
+  <div><strong>1. Declare</strong><span>Add a chapter or subchapter to slide frontmatter.</span></div>
+  <div><strong>2. Display</strong><span>Drop in components such as <code>&lt;ChapterTitle /&gt;</code>.</span></div>
+  <div><strong>3. Style</strong><span>Use stable CSS classes to match your presentation.</span></div>
 </div>
 
-<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
+<ChapterToc :show-numbers="true" :show-subchapters="true" />
+
+</div>
 
 ---
-layout: section
+
+# The mental model
+
+Every presentation still consists of ordinary **slides**. You mark only the slides where a new section begins.
+
+<div class="model-flow" aria-label="Chapter and subchapter hierarchy">
+  <div class="model-flow__chapter">Chapter: Foundations</div>
+  <div class="model-flow__subchapter">Subchapter: Declarations</div>
+  <div class="model-flow__slide">Slide</div>
+  <div class="model-flow__slide">Slide</div>
+  <div class="model-flow__subchapter">Subchapter: Components</div>
+  <div class="model-flow__slide">Slide</div>
+</div>
+
+- A `chapter` stays active until the next chapter declaration.
+- A `subchapter` belongs to the active chapter and is optional.
+- Layouts and headings remain yours; metadata supplies the structure.
+
+---
+
+<div data-testid="playground-setup">
+
+# Start in two small steps
+
+**1. Enable the addon in the headmatter of `slides.md`:**
+
+```yaml
+---
+addons:
+  - slidev-addon-chapters
+---
+```
+
+**2. Add metadata to the slide that begins your first chapter:**
+
+```yaml
+---
 chapter:
-  id: fundamentals
-  title: Fundamentals
+  id: foundations
+  title: Foundations
 ---
+```
 
-# Fundamentals
+That declaration slide and every following slide now belong to **Foundations** until another chapter begins.
 
-The chapter declaration works with an ordinary theme layout.
-
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
 </div>
 
 ---
-subchapter:
+layout: two-cols
+chapter:
+  id: foundations
+  title: Foundations
+data-testid: chapter-declaration-example
+---
+
+# Declare a chapter
+
+## Result
+
+<div class="result-panel">
+  <span class="eyebrow">The active chapter is</span>
+  <ChapterTitle />
+</div>
+
+The chapter begins on this slide. Its `id` is a stable technical key; its `title` is what readers see.
+
+::right::
+
+## Markdown
+
+```md
+---
+layout: two-cols
+chapter:
   id: foundations
   title: Foundations
 ---
 
-# A titled member slide
+# Declare a chapter
 
-This title must not become a `ChapterToc` entry.
+<ChapterTitle />
+```
 
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
+Only the `chapter` block creates chapter semantics. You can combine it with any theme layout.
+
+---
+layout: two-cols
+subchapter:
+  id: declarations
+  title: Declarations
+data-testid: subchapter-declaration-example
+---
+
+# Add an optional subchapter
+
+## Result
+
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+
+Both **Foundations** and **Declarations** are marked as current because this slide starts that subchapter.
+
+::right::
+
+## Markdown
+
+```md
+---
+layout: two-cols
+subchapter:
+  id: declarations
+  title: Declarations
+---
+
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+```
+
+Subchapter IDs need to be unique only inside their chapter.
+
+---
+layout: two-cols
+data-testid: chapter-title-example
+---
+
+# Show the active chapter title
+
+## Result
+
+<div class="result-stack">
+  <div class="result-panel">
+    <span class="eyebrow">Compact name</span>
+    <ChapterTitle />
+  </div>
+  <div class="result-panel">
+    <span class="eyebrow">Explicit name</span>
+    <CurrentChapterTitle />
+  </div>
 </div>
 
-<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
+Both components react to navigation. The explicit variant has its own CSS class for independent styling.
+
+::right::
+
+## Markdown
+
+```md
+## Current topic
+
+<ChapterTitle />
+
+<!-- Same value, more explicit name -->
+<CurrentChapterTitle />
+```
+
+Use these small building blocks in headings, footers, or your own layouts.
+
+---
+layout: two-cols
+subchapter:
+  id: components
+  title: Components
+data-testid: chapter-position-example
+---
+
+# Add chapter progress
+
+## Result
+
+<div class="position-demo" data-testid="chapter-position-result">
+  Chapter <CurrentChapterNumber /> of <ChapterCount />
+</div>
+
+`CurrentChapterNumber` is one-based. `ChapterCount` includes all chapter declarations in the resolved deck.
+
+::right::
+
+## Markdown
+
+```md
+Chapter <CurrentChapterNumber />
+of <ChapterCount />
+```
+
+The components provide only their values. You decide whether they become a footer, badge, or progress indicator.
+
+---
+layout: two-cols
+data-testid: chapter-toc-default-example
+---
+
+# Build chapter navigation
+
+## Result
+
+<ChapterToc />
+
+The default is deliberately small: one link per chapter, with no numbering or subchapters.
+
+::right::
+
+## Markdown
+
+```md
+<ChapterToc />
+```
+
+Each entry navigates to the first slide of that chapter using Slidev's navigation API.
+
+---
+layout: two-cols
+data-testid: chapter-toc-options-example
+---
+
+# Choose how much context to show
+
+## Result
+
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+
+Numbering shows the hierarchy, while highlighting follows the active chapter and subchapter.
+
+::right::
+
+## Markdown
+
+```md
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+```
+
+- `show-numbers`: prefixes `1`, `1.1`, …
+- `show-subchapters`: reveals the second level
+- `highlight-current`: exposes current-state classes and attributes
 
 ---
 src: ./pages/architecture.md
 ---
 
 ---
+layout: two-cols
 subchapter:
-  id: target-architecture
-  title: Target Architecture
+  id: composable
+  title: Composable
+data-testid: use-chapters-example
 ---
 
-# Architecture details
+<script setup>
+import { useChapters } from 'slidev-addon-chapters'
 
-This slide belongs to the imported Architecture chapter.
+const { chapters, currentChapter, currentSubchapter } = useChapters()
+</script>
 
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
+# Build your own chapter UI
+
+## Result
+
+<div class="data-card">
+  <span><strong>{{ chapters.length }}</strong> chapters found</span>
+  <span>Current: <strong>{{ currentChapter?.title }}</strong></span>
+  <span>Subchapter: <strong>{{ currentSubchapter?.title }}</strong></span>
 </div>
 
----
-chapter:
-  id: delivery
-  title: Delivery
----
+The readonly refs update whenever Slidev navigation changes.
 
-# Delivery
+::right::
 
-This chapter begins on a content slide, has no subchapters, and runs to the deck end.
+## Markdown
 
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
-</div>
+```vue
+<script setup>
+import { useChapters }
+  from 'slidev-addon-chapters'
 
-<ChapterToc :show-numbers="true" :show-subchapters="true" :highlight-current="true"></ChapterToc>
+const {
+  chapters,
+  currentChapter,
+  currentSubchapter,
+} = useChapters()
+</script>
 
----
-
-# Optional theme-owned divider
-
-Themes may combine their own layout with the same semantic declaration:
-
-```yaml
-layout: chapter
-chapter:
-  id: theme-divider
-  title: Theme-owned divider
+{{ currentChapter?.title }}
 ```
 
-The addon does not provide or interpret `layout: chapter`.
+Use the composable when the ready-made components are not enough for your layout or addon.
 
-<div class="chapter-context">
-  <span class="chapter-context__label">Current chapter</span>
-  <ChapterTitle></ChapterTitle>
+---
+layout: two-cols
+class: title-css-demo
+data-testid: title-css-example
+---
+
+# Style titles and position values
+
+## Result
+
+<div>
+  Chapter <CurrentChapterNumber /> / <ChapterCount /><br>
+  <ChapterTitle />
 </div>
 
+The addon provides semantic class names, not a visual identity. Your presentation stays in control.
+
+::right::
+
+## Markdown
+
+```md
+Chapter <CurrentChapterNumber /> / <ChapterCount />
+
+<ChapterTitle />
+
 <style>
-.chapter-context {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.65rem;
-  margin-block: 1rem;
-  padding: 0.45rem 0.75rem;
-  border: 1px solid currentColor;
-  border-radius: 0.4rem;
+.title-css-demo .chapter-title {
+  color: #2563eb;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
-.chapter-context__label {
-  opacity: 0.6;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.chapter-title {
-  font-weight: 600;
-}
-
-.chapter-context:has(.chapter-title) .chapter-context__empty {
-  display: none;
-}
-
-.chapter-context__empty {
-  opacity: 0.6;
-  font-style: italic;
-}
-
-.chapter-toc__sublist {
-  margin-block: 0.2rem 0.6rem;
-  padding-inline-start: 1.5rem;
-}
-
-.chapter-toc__subitem--current .chapter-toc__subtitle {
+.title-css-demo .current-chapter-number {
+  color: #2563eb;
   font-weight: 700;
-  text-decoration: underline;
 }
 </style>
+```
+
+The selectors in this example are stable public styling hooks.
+
+---
+layout: two-cols
+chapter:
+  id: next-steps
+  title: Next Steps
+class: toc-css-demo
+data-testid: toc-css-example
+---
+
+# Style the table of contents
+
+## Result
+
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+
+Current-state classes let a theme emphasize location without reimplementing chapter discovery.
+
+::right::
+
+## Markdown
+
+```md
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+
+<style>
+.toc-css-demo .chapter-toc__link {
+  padding: .35rem .6rem;
+  border-radius: .5rem;
+}
+
+.toc-css-demo
+  .chapter-toc__item--current
+  .chapter-toc__link {
+  color: white;
+  background: #2563eb;
+}
+</style>
+```
+
+Public element and state classes are safe for presentation and theme CSS.
