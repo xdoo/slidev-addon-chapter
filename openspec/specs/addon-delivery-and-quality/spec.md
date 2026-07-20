@@ -81,7 +81,7 @@ The first implementation SHALL evaluate Playwright for navigation, refresh, pres
 - **THEN** required manual integration evidence is recorded and a scoped follow-up is created rather than dropping the checks
 
 ### Requirement: Public documentation
-The README SHALL document installation using the finalized npm name, full-name addon configuration, a minimal usage example, chapter and optional subchapter concepts/frontmatter semantics, fixed hierarchy and validation rules, optional layout separation, `useChapters()` imports and complete public types, `<ChapterTitle />` and `<ChapterToc />` usage, navigation, stable chapter/subchapter styling APIs, preface behavior, supported Node/Slidev/Vue versions, theme neutrality, static/export limitations, package and repository links, package/API versioning, MIT license information, and the maintainer process for local verification and trusted GitHub Release publication. Existing feature documentation unrelated to publication MUST NOT be rewritten.
+The README SHALL document installation using the finalized npm name, full-name addon configuration, a minimal usage example, chapter and optional subchapter concepts/frontmatter semantics, fixed hierarchy and validation rules, optional layout separation, `useChapters()` imports and complete public types, `<CurrentChapterTitle />` and `<ChapterToc />` usage, navigation, stable chapter/subchapter styling APIs, preface behavior, supported Node/Slidev/Vue versions, theme neutrality, static/export limitations, package and repository links, package/API versioning, MIT license information, migration from the removed `<ChapterTitle />` and `.chapter-title` APIs, and the maintainer process for local verification and trusted GitHub Release publication. Existing feature documentation unrelated to publication MUST NOT be rewritten.
 
 #### Scenario: New consumer follows README
 - **WHEN** a consumer installs the npm package and configures a valid deck solely from the README
@@ -92,5 +92,5 @@ The README SHALL document installation using the finalized npm name, full-name a
 - **THEN** the documented process covers local pack verification, version/tag consistency, npm Trusted Publisher configuration, and the published-GitHub-Release trigger without a long-lived npm token
 
 #### Scenario: Existing consumer reads migration guidance
-- **WHEN** a consumer has a chapter-only presentation
-- **THEN** the README states that publication preparation requires no frontmatter, component, styling, or API migration
+- **WHEN** a consumer uses `<ChapterTitle />` or styles `.chapter-title`
+- **THEN** the README directs them to replace those APIs with `<CurrentChapterTitle />` and `.current-chapter-title`

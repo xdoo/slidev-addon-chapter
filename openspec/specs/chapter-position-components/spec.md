@@ -37,7 +37,7 @@ The addon SHALL provide an auto-discovered Vue component named `ChapterCount` th
 - **THEN** `ChapterCount` updates automatically to the new count
 
 ### Requirement: Current chapter title rendering (explicit component)
-The addon SHALL provide an auto-discovered Vue component named `CurrentChapterTitle` that retrieves chapter state through `useChapters()` and renders the active chapter's `title` as its only text content, using the CSS class `.current-chapter-title` distinct from the existing `ChapterTitle` component's `.chapter-title`.
+The addon SHALL provide `CurrentChapterTitle` as the sole auto-discovered Vue component dedicated to rendering the active chapter title. It SHALL retrieve chapter state through `useChapters()` and render the active chapter's `title` as its only text content using the CSS class `.current-chapter-title`. The addon SHALL NOT provide an auto-discovered `ChapterTitle` component.
 
 #### Scenario: Active chapter exists
 - **WHEN** `useChapters()` exposes an active chapter whose `title` is `Architecture`
@@ -51,6 +51,11 @@ The addon SHALL provide an auto-discovered Vue component named `CurrentChapterTi
 #### Scenario: No active chapter
 - **WHEN** the current slide has no active chapter
 - **THEN** `CurrentChapterTitle` renders nothing
+
+#### Scenario: Consumer chooses the title component
+- **WHEN** a consumer inspects the addon's auto-discovered components
+- **THEN** `CurrentChapterTitle` is available for rendering the active chapter title
+- **AND** `ChapterTitle` is not provided
 
 ### Requirement: Minimal markup per component
 Each position component SHALL render exactly one `span` with its designated public CSS class when its value is present, SHALL add no wrapper, and SHALL introduce no additional semantic or accessibility attributes.
