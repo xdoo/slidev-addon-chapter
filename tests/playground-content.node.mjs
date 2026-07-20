@@ -39,7 +39,6 @@ test('covers the public chapter guide surface with live examples', () => {
   for (const expected of [
     'chapter:',
     'subchapter:',
-    '<ChapterTitle',
     '<CurrentChapterTitle',
     '<CurrentChapterNumber',
     '<ChapterCount',
@@ -59,7 +58,7 @@ test('keeps CSS demos scoped and uses public addon styling hooks', () => {
   assert.match(slides, /class: toc-css-demo/)
 
   for (const selector of [
-    '.chapter-title',
+    '.current-chapter-title',
     '.current-chapter-number',
     '.chapter-toc__link',
     '.chapter-toc__item--current',

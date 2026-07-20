@@ -113,38 +113,6 @@ chapter:
 
 The addon provides no layouts, overrides no theme layout, and adds no global CSS.
 
-## `<ChapterTitle />`
-
-`<ChapterTitle />` displays the title of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for headers, footers, progress indicators, and custom layouts.
-
-Components in an addon are discovered automatically by Slidev. Add the component wherever the current chapter title should appear:
-
-```md
-# Current chapter
-
-<ChapterTitle />
-```
-
-When the active chapter title is `Architecture`, the component renders:
-
-```html
-<span class="chapter-title">
-  Architecture
-</span>
-```
-
-It renders nothing before the first chapter or whenever no chapter is active. The title updates automatically as navigation enters another chapter. The component always displays `chapter.title`; it adds no numbering, icons, wrapper elements, or extra semantics.
-
-The component has no inline or opinionated default styles. Use its public CSS class to theme it:
-
-```css
-.chapter-title {
-  font-weight: 600;
-}
-```
-
-`.chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases.
-
 ## `<CurrentChapterNumber />`
 
 `<CurrentChapterNumber />` displays the one-based number of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for progress indicators and chapter-aware footers.
@@ -207,12 +175,14 @@ The component has no inline or opinionated default styles. Use its public CSS cl
 
 ## `<CurrentChapterTitle />`
 
-`<CurrentChapterTitle />` displays the title of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It provides equivalent functionality to `ChapterTitle` with a more explicit name and its own distinct CSS class (`.current-chapter-title` instead of `.chapter-title`). Both components coexist without conflict.
+`<CurrentChapterTitle />` is the addon's canonical component for displaying the title of the currently active chapter without requiring a theme or presentation to access `useChapters()` directly. It is a presentation-agnostic building block for headers, footers, progress indicators, and custom layouts.
 
 Components in an addon are discovered automatically by Slidev. Add the component wherever the current chapter title should appear:
 
 ```md
-# <CurrentChapterTitle />
+# Current chapter
+
+<CurrentChapterTitle />
 ```
 
 When the active chapter title is `Architecture`, the component renders:
@@ -233,7 +203,7 @@ The component has no inline or opinionated default styles. Use its public CSS cl
 }
 ```
 
-`.current-chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases.
+`.current-chapter-title` is part of the addon's stable public styling API and will remain compatible across minor releases. Presentations upgrading from an earlier release must replace `<ChapterTitle />` with `<CurrentChapterTitle />` and `.chapter-title` with `.current-chapter-title`.
 
 ## `<ChapterToc />`
 
@@ -270,7 +240,6 @@ Every relevant DOM element exposes stable CSS class names and data attributes.
 ### CSS classes
 
 ```text
-.chapter-title
 .current-chapter-number
 .chapter-count
 .current-chapter-title
@@ -422,7 +391,7 @@ Use a unique ID within that chapter. IDs may repeat in different chapters.
 
 ## Migration from chapter-only decks
 
-Existing presentations require no changes. Chapter frontmatter, `ChapterTitle`, `ChapterToc` defaults, chapter navigation, and `currentChapter` retain their behavior. Adopt subchapters incrementally by adding declarations, enabling `showSubchapters` where desired, and reading the new runtime fields.
+Existing chapter frontmatter, `ChapterToc` defaults, chapter navigation, and `currentChapter` retain their behavior. Presentations using the removed `<ChapterTitle />` component or `.chapter-title` selector must migrate to `<CurrentChapterTitle />` and `.current-chapter-title`. Adopt subchapters incrementally by adding declarations, enabling `showSubchapters` where desired, and reading the new runtime fields.
 
 If `<ChapterToc />` is unknown, confirm the full addon name is listed in the first slide's headmatter and that the installed Slidev version satisfies the supported range.
 

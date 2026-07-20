@@ -13,7 +13,7 @@ title: Slidev Chapters Addon Playground
 
 <div class="intro-grid">
   <div><strong>1. Declare</strong><span>Add a chapter or subchapter to slide frontmatter.</span></div>
-  <div><strong>2. Display</strong><span>Drop in components such as <code>&lt;ChapterTitle /&gt;</code>.</span></div>
+  <div><strong>2. Display</strong><span>Drop in components such as <code>&lt;CurrentChapterTitle /&gt;</code>.</span></div>
   <div><strong>3. Style</strong><span>Use stable CSS classes to match your presentation.</span></div>
 </div>
 
@@ -83,7 +83,7 @@ data-testid: chapter-declaration-example
 
 <div class="result-panel">
   <span class="eyebrow">The active chapter is</span>
-  <ChapterTitle />
+  <CurrentChapterTitle />
 </div>
 
 The chapter begins on this slide. Its `id` is a stable technical key; its `title` is what readers see.
@@ -102,7 +102,7 @@ chapter:
 
 # Declare a chapter
 
-<ChapterTitle />
+<CurrentChapterTitle />
 ```
 
 Only the `chapter` block creates chapter semantics. You can combine it with any theme layout.
@@ -150,25 +150,19 @@ Subchapter IDs need to be unique only inside their chapter.
 
 ---
 layout: two-cols
-data-testid: chapter-title-example
+data-testid: current-chapter-title-example
 ---
 
 # Show the active chapter title
 
 ## Result
 
-<div class="result-stack">
-  <div class="result-panel">
-    <span class="eyebrow">Compact name</span>
-    <ChapterTitle />
-  </div>
-  <div class="result-panel">
-    <span class="eyebrow">Explicit name</span>
-    <CurrentChapterTitle />
-  </div>
+<div class="result-panel">
+  <span class="eyebrow">Canonical component</span>
+  <CurrentChapterTitle />
 </div>
 
-Both components react to navigation. The explicit variant has its own CSS class for independent styling.
+The component reacts automatically to navigation and exposes the `.current-chapter-title` styling hook.
 
 ::right::
 
@@ -177,9 +171,6 @@ Both components react to navigation. The explicit variant has its own CSS class 
 ```md
 ## Current topic
 
-<ChapterTitle />
-
-<!-- Same value, more explicit name -->
 <CurrentChapterTitle />
 ```
 
@@ -333,7 +324,7 @@ data-testid: title-css-example
 
 <div>
   Chapter <CurrentChapterNumber /> / <ChapterCount /><br>
-  <ChapterTitle />
+  <CurrentChapterTitle />
 </div>
 
 The addon provides semantic class names, not a visual identity. Your presentation stays in control.
@@ -345,10 +336,10 @@ The addon provides semantic class names, not a visual identity. Your presentatio
 ```md
 Chapter <CurrentChapterNumber /> / <ChapterCount />
 
-<ChapterTitle />
+<CurrentChapterTitle />
 
 <style>
-.title-css-demo .chapter-title {
+.title-css-demo .current-chapter-title {
   color: #2563eb;
   font-size: 2rem;
   font-weight: 800;
