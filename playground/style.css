@@ -93,7 +93,6 @@
   gap: 0.75rem;
 }
 
-.result-panel .chapter-title,
 .result-panel .current-chapter-title {
   display: block;
   margin-top: 0.35rem;
@@ -126,7 +125,7 @@
 }
 
 /* Demonstrated public addon hooks, scoped to their example slides. */
-.title-css-demo .chapter-title {
+.title-css-demo .current-chapter-title {
   color: #2563eb;
   font-size: 2rem;
   font-weight: 800;

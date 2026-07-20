@@ -29,7 +29,7 @@ try {
   assert.equal(await page.locator('[aria-current="location"]').count(), 0)
 
   await followToc('[data-testid="playground-introduction"] [data-chapter-id="foundations"] > .chapter-toc__link', 'Declare a chapter')
-  assert.equal(await page.locator('.chapter-title').filter({ visible: true }).first().textContent(), 'Foundations')
+  assert.equal(await page.locator('.current-chapter-title').filter({ visible: true }).first().textContent(), 'Foundations')
 
   await openOverview()
   await followToc('[data-testid="playground-introduction"] [data-subchapter-id="declarations"] > .chapter-toc__sublink', 'Add an optional subchapter')
@@ -42,7 +42,7 @@ try {
 
   await openOverview()
   await followToc('[data-testid="playground-introduction"] [data-chapter-id="architecture"] > .chapter-toc__link', 'Keep structure in imported slides')
-  assert.equal(await page.locator('.result-panel .chapter-title').textContent(), 'Architecture')
+  assert.equal(await page.locator('.result-panel .current-chapter-title').textContent(), 'Architecture')
   const architecturePath = new URL(page.url()).pathname
 
   await openOverview()

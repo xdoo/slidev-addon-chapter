@@ -15,7 +15,7 @@ data-testid: imported-slide-example
 
 <div class="result-panel">
   <span class="eyebrow">Imported chapter</span>
-  <ChapterTitle />
+  <CurrentChapterTitle />
 </div>
 
 This title comes from the imported page's own frontmatter. Slidev resolves the page into the presentation, and the addon uses that resolved order.
