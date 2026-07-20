@@ -17,7 +17,7 @@
 
 ## 4. Verification
 
-- [ ] 4.1 Enable GitHub Pages in the repository settings (Settings → Pages → Source: GitHub Actions). This is a one-time manual step.
-- [ ] 4.2 Push the change to a branch, merge to main, and confirm the workflow deploys successfully.
-- [ ] 4.3 Open the deployed URL and verify all slides render correctly: preface, chapters, subchapters, imported slides, ChapterTitle, ChapterToc with all props, and navigation.
-- [ ] 4.4 Confirm the README link works and points to the correct deployed URL.
+- [x] 4.1 Enable GitHub Pages in the repository settings (Settings → Pages → Source: GitHub Actions). This is a one-time manual step.
+- [x] 4.2 Push the change to a branch, merge to main, and confirm the workflow deploys successfully.
+- [x] 4.3 Open the deployed URL and verify all slides render correctly: preface, chapters, subchapters, imported slides, ChapterTitle, ChapterToc with all props, and navigation.
+- [x] 4.4 Confirm the README link works and points to the correct deployed URL.
