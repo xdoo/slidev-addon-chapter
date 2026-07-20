@@ -63,6 +63,53 @@ describe('ChapterToc', () => {
     expect(wrapper.get('[data-subchapter-id="delivery"] button').attributes('aria-current')).toBe('location')
   })
 
+  it('supports explicit hierarchy mode', () => {
+    const wrapper = mount(ChapterToc, { props: { showSubchapters: true, highlightCurrent: true, highlightCurrentMode: 'hierarchy' } })
+
+    expect(wrapper.get('[data-chapter-id="one"]').attributes('data-current')).toBe('true')
+    expect(wrapper.get('[data-subchapter-id="context"]').attributes('data-current')).toBe('true')
+    expect(wrapper.findAll('[aria-current="location"]')).toHaveLength(2)
+  })
+
+  it('highlights only the active subchapter in single mode', () => {
+    const wrapper = mount(ChapterToc, { props: { showSubchapters: true, highlightCurrent: true, highlightCurrentMode: 'single' } })
+
+    expect(wrapper.get('[data-chapter-id="one"]').classes()).not.toContain('chapter-toc__item--current')
+    expect(wrapper.get('[data-chapter-id="one"]').attributes('data-current')).toBeUndefined()
+    expect(wrapper.get('[data-subchapter-id="context"]').classes()).toContain('chapter-toc__subitem--current')
+    expect(wrapper.get('[data-subchapter-id="context"]').attributes('data-current')).toBe('true')
+    expect(wrapper.findAll('[aria-current="location"]')).toHaveLength(1)
+  })
+
+  it('falls back to the chapter in single mode when subchapters are hidden', () => {
+    const wrapper = mount(ChapterToc, { props: { highlightCurrent: true, highlightCurrentMode: 'single' } })
+
+    expect(wrapper.get('[data-chapter-id="one"]').attributes('data-current')).toBe('true')
+    expect(wrapper.find('[data-subchapter-id="context"]').exists()).toBe(false)
+    expect(wrapper.findAll('[aria-current="location"]')).toHaveLength(1)
+  })
+
+  it('marks only the chapter in single mode before its first subchapter', async () => {
+    const wrapper = mount(ChapterToc, { props: { showSubchapters: true, highlightCurrent: true, highlightCurrentMode: 'single' } })
+
+    currentPage.value = 4
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.get('[data-chapter-id="two"]').attributes('data-current')).toBe('true')
+    expect(wrapper.find('.chapter-toc__subitem--current').exists()).toBe(false)
+    expect(wrapper.findAll('[aria-current="location"]')).toHaveLength(1)
+  })
+
+  it('clears all current markers before the first chapter in either mode', async () => {
+    const wrapper = mount(ChapterToc, { props: { showSubchapters: true, highlightCurrent: true, highlightCurrentMode: 'single' } })
+
+    currentPage.value = 1
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.findAll('[aria-current="location"]')).toHaveLength(0)
+    expect(wrapper.find('[data-current="true"]').exists()).toBe(false)
+  })
+
   it('navigates to a subchapter start with Slidev go', async () => {
     const wrapper = mount(ChapterToc, { props: { showSubchapters: true } })
     await wrapper.get('[data-subchapter-id="delivery"] button').trigger('click')

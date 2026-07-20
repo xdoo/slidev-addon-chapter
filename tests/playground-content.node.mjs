@@ -46,6 +46,7 @@ test('covers the public chapter guide surface with live examples', () => {
     ':show-numbers="true"',
     ':show-subchapters="true"',
     ':highlight-current="true"',
+    'highlight-current-mode="single"',
     'src: ./pages/architecture.md',
     "useChapters } from 'slidev-addon-chapters'",
   ]) {

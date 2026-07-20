@@ -217,6 +217,12 @@ Components in an addon are discovered automatically by Slidev:
   :show-subchapters="true"
   :highlight-current="true"
 />
+
+<ChapterToc
+  :show-subchapters="true"
+  :highlight-current="true"
+  highlight-current-mode="single"
+/>
 ```
 
 | Prop | Type | Default | Effect |
@@ -224,8 +230,9 @@ Components in an addon are discovered automatically by Slidev:
 | `showNumbers` | `boolean` | `false` | Shows one-based chapter numbers. |
 | `showSubchapters` | `boolean` | `false` | Renders nested subchapters; with numbers enabled they use `1.1`, `1.2`, and so on. |
 | `highlightCurrent` | `boolean` | `false` | Marks the current entry with `aria-current="location"`, `data-current="true"`, and `.chapter-toc__item--current`. |
+| `highlightCurrentMode` | `"hierarchy" \| "single"` | `"hierarchy"` | With current highlighting enabled, marks both the chapter and active subchapter in `hierarchy`, or only the deepest visible current entry in `single`. |
 
-The default remains chapter-only even when subchapters are declared. When enabled, each subchapter is nested beneath its owning chapter; current chapter and subchapter entries are both highlighted. Chapter and subchapter buttons use Slidev's public `go()` operation to navigate to their first slide.
+The default remains chapter-only even when subchapters are declared. When enabled, each subchapter is nested beneath its owning chapter. `hierarchy` preserves the default behavior of highlighting both the current chapter and subchapter. `single` highlights only the active subchapter when subchapters are shown; when they are hidden, or no subchapter is active, it highlights the visible chapter. Chapter and subchapter buttons use Slidev's public `go()` operation to navigate to their first slide.
 
 The small component-scoped baseline only resets the button and list enough to remain usable. Themes and decks retain control of appearance.
 
