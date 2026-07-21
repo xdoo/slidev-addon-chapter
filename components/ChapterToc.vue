@@ -6,15 +6,34 @@ import Chapter from './ChapterToc/Chapter.vue'
 const {
   showNumbers = false,
   highlightCurrent = false,
+  highlightCurrentMode = 'hierarchy',
   showSubchapters = false,
 } = defineProps<{
   showNumbers?: boolean
   highlightCurrent?: boolean
+  highlightCurrentMode?: 'hierarchy' | 'single'
   showSubchapters?: boolean
 }>()
 
 const { chapters, currentChapter, currentSubchapter } = useChapters()
 const { go } = useNav()
+
+const isChapterCurrent = (chapterId: string) => {
+  if (!highlightCurrent || currentChapter.value?.id !== chapterId)
+    return false
+
+  return highlightCurrentMode !== 'single' || !showSubchapters || !currentSubchapter.value
+}
+
+const currentSubchapterIdFor = (chapterId: string) => {
+  if (!highlightCurrent || currentChapter.value?.id !== chapterId || !currentSubchapter.value)
+    return undefined
+
+  if (highlightCurrentMode === 'single' && !showSubchapters)
+    return undefined
+
+  return currentSubchapter.value.id
+}
 </script>
 
 <template>
@@ -26,8 +45,8 @@ const { go } = useNav()
         :chapter="chapter"
         :show-numbers="showNumbers"
         :show-subchapters="showSubchapters"
-        :is-current="highlightCurrent && currentChapter?.id === chapter.id"
-        :current-subchapter-id="highlightCurrent && currentChapter?.id === chapter.id ? currentSubchapter?.id : undefined"
+        :is-current="isChapterCurrent(chapter.id)"
+        :current-subchapter-id="currentSubchapterIdFor(chapter.id)"
         @navigate="go"
       />
     </ol>

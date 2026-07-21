@@ -237,13 +237,27 @@ data-testid: chapter-toc-options-example
 
 ## Result
 
-<ChapterToc
-  :show-numbers="true"
-  :show-subchapters="true"
-  :highlight-current="true"
-/>
+<div class="result-stack">
+  <div class="result-panel">
+    <span class="eyebrow">Hierarchy mode</span>
+    <ChapterToc
+      :show-numbers="true"
+      :show-subchapters="true"
+      :highlight-current="true"
+    />
+  </div>
+  <div class="result-panel">
+    <span class="eyebrow">Single mode</span>
+    <ChapterToc
+      :show-numbers="true"
+      :show-subchapters="true"
+      :highlight-current="true"
+      highlight-current-mode="single"
+    />
+  </div>
+</div>
 
-Numbering shows the hierarchy, while highlighting follows the active chapter and subchapter.
+`hierarchy` highlights the chapter and subchapter together. `single` highlights only the active visible entry.
 
 ::right::
 
@@ -255,11 +269,19 @@ Numbering shows the hierarchy, while highlighting follows the active chapter and
   :show-subchapters="true"
   :highlight-current="true"
 />
+
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+  highlight-current-mode="single"
+/>
 ```
 
 - `show-numbers`: prefixes `1`, `1.1`, …
 - `show-subchapters`: reveals the second level
 - `highlight-current`: exposes current-state classes and attributes
+- `highlight-current-mode`: chooses `hierarchy` (default) or `single`
 
 ---
 src: ./pages/architecture.md

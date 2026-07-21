@@ -37,7 +37,7 @@ defineEmits<{ navigate: [slideNumber: number] }>()
         :chapter-id="chapter.id"
         :chapter-index="chapter.index"
         :show-numbers="showNumbers"
-        :is-current="isCurrent && currentSubchapterId === subchapter.id"
+        :is-current="currentSubchapterId === subchapter.id"
         @navigate="$emit('navigate', $event)"
       />
     </ol>
