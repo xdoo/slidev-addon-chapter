@@ -5,7 +5,7 @@ addons:
 title: Slidev Chapters Addon Playground
 ---
 
-<div data-testid="playground-introduction">
+<div data-testid="playground-introduction"></div>
 
 # Give long presentations a clear structure
 
