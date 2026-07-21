@@ -436,11 +436,3 @@ This package is distributed under the [MIT License](./LICENSE).
 
 The [API spike](./docs/API-SPIKE.md) records the selected Slidev integration and official sources. The [verification record](./docs/VERIFICATION.md) contains the tested themes, browser scenarios, base-path build, and export findings.
 
-## Possible follow-ups
-
-- An opt-in deterministic derived-ID policy with explicit collision and compatibility rules
-- `<ChapterIndicator />`
-- `<ChapterProgress />`
-- Previous/next chapter navigation
-- Richer build-time diagnostics
-- Broader Playwright, cross-browser, and export automation

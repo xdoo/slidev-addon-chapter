@@ -17,10 +17,6 @@ title: Slidev Chapters Addon Playground
   <div><strong>3. Style</strong><span>Use stable CSS classes to match your presentation.</span></div>
 </div>
 
-<ChapterToc :show-numbers="true" :show-subchapters="true" />
-
-</div>
-
 ---
 
 # The mental model
@@ -246,6 +242,37 @@ data-testid: chapter-toc-options-example
       :highlight-current="true"
     />
   </div>
+</div>
+
+`hierarchy` highlights the chapter and subchapter together. `single` highlights only the active visible entry.
+
+::right::
+
+## Markdown
+
+```md
+<ChapterToc
+  :show-numbers="true"
+  :show-subchapters="true"
+  :highlight-current="true"
+/>
+```
+
+- `show-numbers`: prefixes `1`, `1.1`, …
+- `show-subchapters`: reveals the second level
+- `highlight-current`: exposes current-state classes and attributes
+- `highlight-current-mode`: chooses `hierarchy` (default) or `single`
+
+---
+layout: two-cols
+data-testid: chapter-toc-options-example
+---
+
+# Choose how much context to show
+
+## Result
+
+<div class="result-stack">
   <div class="result-panel">
     <span class="eyebrow">Single mode</span>
     <ChapterToc
@@ -264,12 +291,6 @@ data-testid: chapter-toc-options-example
 ## Markdown
 
 ```md
-<ChapterToc
-  :show-numbers="true"
-  :show-subchapters="true"
-  :highlight-current="true"
-/>
-
 <ChapterToc
   :show-numbers="true"
   :show-subchapters="true"
