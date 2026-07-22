@@ -38,4 +38,4 @@
 - [x] 5.6 Run `npm pack --dry-run` and verify the intended package inventory.
 - [ ] 5.7 Validate the Release Please configuration and inspect the generated first Release PR/dry-run to ensure it proposes exactly `0.1.1` and updates both changelog and package metadata.
 - [x] 5.8 Confirm no tag, GitHub Release, or npm publish occurred during implementation and that the final diff contains no runtime API changes or permanent credentials.
-- [ ] 5.9 Record the exact first real-release handoff: configure external credentials, merge the automation, review/merge the `0.1.1` Release PR, verify `v0.1.1` and the GitHub Release, then inspect the `publish.yml` run and npm provenance.
+- [x] 5.9 Record the exact first real-release handoff: configure external credentials, merge the automation, review/merge the `0.1.1` Release PR, verify `v0.1.1` and the GitHub Release, then inspect the `publish.yml` run and npm provenance.
