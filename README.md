@@ -418,19 +418,28 @@ The release workflow runs the tests, typecheck, Slidev build, clean packed-packa
 
 ## Release process
 
-The package is public and unscoped. Releases use npm Trusted Publishing from a published GitHub Release; token-based manual publishing is not supported.
+Releases are automated and remain reviewable. Merge normal changes into `main`; the `Release Please` workflow then opens or updates a release PR. Review the proposed version, changelog, and package metadata, and merge that release PR when the checks are green. Release Please then creates the matching `v<version>` tag and a published GitHub Release. The published Release triggers `.github/workflows/publish.yml`, which repeats the quality gates and publishes to `https://registry.npmjs.org` with npm Trusted Publishing and provenance. The package is published on npm, not GitHub Packages.
 
-Before the first release:
+New commits use [Conventional Commits](https://www.conventionalcommits.org/):
 
-1. Confirm that `slidev-addon-chapters` is still available on npm and that unscoped public publication is intended.
-2. Confirm the semantic version in `package.json` and `package-lock.json` (`0.1.1` for this release).
-3. Run `npm ci`, `npm test`, `npm run typecheck`, `npm run build`, `npm run verify:fixture`, and `npm pack --dry-run` locally.
-4. In npm package settings, configure a GitHub Actions trusted publisher with organization/user `xdoo`, repository `slidev-addon-chapter`, and workflow filename `publish.yml`.
-5. Commit the version and release-ready files. Do not publish manually.
+- `fix:` and `perf:` create patch releases.
+- `feat:` creates a minor release while the package is below `1.0.0`.
+- `BREAKING CHANGE:` or a `!` marker creates a major release.
 
-For every release, first bring the versioned changes onto `main`, then create a Git tag exactly matching `v<package.json version>` (for this release, `v0.1.1`) and publish a GitHub Release for that tag. `.github/workflows/publish.yml` checks out that tag, validates the version, repeats every quality gate, and publishes to `https://registry.npmjs.org` using OpenID Connect and npm provenance. It does not publish to GitHub Packages. Pull requests, ordinary pushes, tag creation alone, and draft releases do not publish.
+Existing non-conventional history is not rewritten. The first automated release is bootstrapped from the currently published npm version `0.1.0`; its Release PR must propose `0.1.1`. No tag, GitHub Release, or npm publication is created during bootstrap.
 
-If publishing fails, inspect the failed run in the repository's GitHub Actions tab first. For tag/version errors, check the GitHub Release tag and `package.json`; for authentication errors, verify the npm Trusted Publisher mapping; for a completed publication, check the package and provenance on npm.
+One-time setup requires a GitHub release credential (`RELEASE_PLEASE_TOKEN`, or an equivalent GitHub App installation token) with the minimum permissions needed for Release Please to create release PRs, tags, and Releases. GitHub Actions must also be allowed to create and approve pull requests. The normal repository `GITHUB_TOKEN` is not sufficient because its generated Release event does not trigger downstream workflows.
+
+Configure npm Trusted Publishing for owner `xdoo`, repository `slidev-addon-chapter`, workflow file `publish.yml`, and allowed action `npm publish`. Since the package already exists in the npm registry, the equivalent authenticated npm CLI setup is:
+
+```sh
+npm trust github slidev-addon-chapters \
+  --repo xdoo/slidev-addon-chapter \
+  --file publish.yml \
+  --allow-publish
+```
+
+If a release fails, inspect the Release Please PR first, then the GitHub Actions run, tag and GitHub Release, and finally the npm version/provenance page. A version already present on npm is rejected before publication; published npm versions and tags are immutable and require a new version for corrections.
 
 ## License
 

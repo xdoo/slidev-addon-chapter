@@ -4,13 +4,14 @@ on:
   release:
     types: [published]
 
-permissions:
-  contents: read
-  id-token: write
+permissions: {}
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Check out the release tag
         uses: actions/checkout@v6
@@ -41,6 +42,29 @@ jobs:
             echo "::error title=Release tag mismatch::GitHub Release tag '$RELEASE_TAG' does not match package.json version '$package_version'; expected '$expected_tag'." >&2
             exit 1
           fi
+
+      - name: Reject an already published npm version
+        run: |
+          package_name="$(npm pkg get name | tr -d '"')"
+          package_version="$(npm pkg get version | tr -d '"')"
+          set +e
+          registry_result="$(npm view "${package_name}@${package_version}" version --json --registry=https://registry.npmjs.org 2>&1)"
+          registry_status=$?
+          set -e
+
+          if [ "$registry_status" -eq 0 ]; then
+            echo "::error title=npm version already exists::${package_name}@${package_version} is already present on https://registry.npmjs.org; refusing to publish it again." >&2
+            exit 1
+          fi
+
+          if printf '%s' "$registry_result" | grep -Eq 'E404|404 Not Found|404 \("'; then
+            echo "No existing registry version found for ${package_name}@${package_version}; continuing."
+            exit 0
+          fi
+
+          echo "::error title=Unable to verify npm version::Could not determine whether ${package_name}@${package_version} exists on https://registry.npmjs.org." >&2
+          printf '%s\n' "$registry_result" >&2
+          exit 1
 
       - name: Run tests
         run: npm test

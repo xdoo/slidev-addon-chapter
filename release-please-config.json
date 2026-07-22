@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "385204211fde742c73368e1fb808f469ba6570f0",
+  "release-type": "node",
+  "include-component-in-tag": false,
+  "changelog-path": "CHANGELOG.md",
+  "packages": {
+    ".": {
+      "package-name": "slidev-addon-chapters",
+      "release-type": "node",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}
