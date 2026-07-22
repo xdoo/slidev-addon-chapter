@@ -28,6 +28,6 @@
 
 ## 5. First-release handoff
 
-- [ ] 5.1 Commit the approved workflow/README changes on `main` with `package.json` version `0.1.1`.
+- [x] 5.1 Commit the approved workflow/README changes on `main` with `package.json` version `0.1.1`.
 - [ ] 5.2 Create Git tag `v0.1.1` on that commit and create a GitHub Release for the exact tag.
 - [ ] 5.3 Publish the GitHub Release only after all local gates and npm Trusted Publisher checks pass; inspect the workflow run and npm provenance after publication.
