@@ -27,7 +27,7 @@ test('pairs every feature slide with result and Markdown columns', () => {
   const featureSource = withoutCodeFences(`${slides}\n${importedSlide}`)
   const twoColumnSlides = occurrences(featureSource, 'layout: two-cols')
 
-  assert.equal(twoColumnSlides, 10)
+  assert.equal(twoColumnSlides, 11)
   assert.equal(occurrences(featureSource, '## Result'), twoColumnSlides)
   assert.equal(occurrences(featureSource, '::right::'), twoColumnSlides)
   assert.equal(occurrences(featureSource, '## Markdown'), twoColumnSlides)

@@ -416,7 +416,7 @@ npm run export:pptx
 
 The release workflow runs the tests, typecheck, Slidev build, clean packed-package fixture, and `npm pack --dry-run` as separate gates. The fixture installs the generated tarball into an independent Slidev project and verifies documented imports, automatic component discovery, typechecking, and production build.
 
-## Maintainer release process
+## Release process
 
 The package is public and unscoped. Releases use npm Trusted Publishing from a published GitHub Release; token-based manual publishing is not supported.
 
@@ -428,11 +428,12 @@ Before the first release:
 4. In npm package settings, configure a GitHub Actions trusted publisher with organization/user `xdoo`, repository `slidev-addon-chapter`, and workflow filename `publish.yml`.
 5. Commit the version and release-ready files. Do not publish manually.
 
-For every release, create a GitHub Release whose tag is exactly `v<package.json version>` (for this release, `v0.1.1`) and whose target is the intended release commit, then publish the GitHub Release. `.github/workflows/publish.yml` checks out that tag, validates the version, repeats every quality gate, and publishes to the public npm registry using OpenID Connect and npm provenance. Pull requests, ordinary pushes, tag creation alone, and draft releases do not publish.
+For every release, first bring the versioned changes onto `main`, then create a Git tag exactly matching `v<package.json version>` (for this release, `v0.1.1`) and publish a GitHub Release for that tag. `.github/workflows/publish.yml` checks out that tag, validates the version, repeats every quality gate, and publishes to `https://registry.npmjs.org` using OpenID Connect and npm provenance. It does not publish to GitHub Packages. Pull requests, ordinary pushes, tag creation alone, and draft releases do not publish.
+
+If publishing fails, inspect the failed run in the repository's GitHub Actions tab first. For tag/version errors, check the GitHub Release tag and `package.json`; for authentication errors, verify the npm Trusted Publisher mapping; for a completed publication, check the package and provenance on npm.
 
 ## License
 
 This package is distributed under the [MIT License](./LICENSE).
 
 The [API spike](./docs/API-SPIKE.md) records the selected Slidev integration and official sources. The [verification record](./docs/VERIFICATION.md) contains the tested themes, browser scenarios, base-path build, and export findings.
-
